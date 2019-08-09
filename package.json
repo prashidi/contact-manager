@@ -4,7 +4,8 @@
   "description": "Simple CRUD Contact application using Reactjs and Django Rest API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack --mode development --watch ./contacts/frontend/src/index.js --output ./contacts/frontend/static/frontend/main.js",
+    "build": "webpack --mode production ./contacts/frontend/src/index.js --output ./contacts/frontend/static/frontend/main.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,22 @@
   },
   "homepage": "https://github.com/prashidi/contact-manager#readme",
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
   }
 }
