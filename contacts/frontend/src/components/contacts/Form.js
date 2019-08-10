@@ -17,7 +17,12 @@ class Form extends Component {
     const { name, email, phone } = this.state;
     const contact = { name, email, phone };
 
-    this.props.addContact(contact)
+    this.props.addContact(contact);
+    this.setState({
+      name: "",
+      email: "",
+      phone: ""
+    });
   };
 
   render() {
@@ -57,7 +62,7 @@ class Form extends Component {
               />
             </div>
             <div className="form-group">
-              <button className="btn btn-outline-primary btn-lg">Submit</button>
+              <button className="btn btn-outline-primary btn-lg">Save</button>
             </div>
           </div>
         </form>
