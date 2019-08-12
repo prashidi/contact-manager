@@ -6,7 +6,9 @@ import {
   AUTH_ERROR,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL
 } from "./types";
 
 //Check token
@@ -14,22 +16,8 @@ export const loadUser = () => (dispatch, getState) => {
   //user loading
   dispatch({ type: USER_LOADING });
 
-  //get the token
-  const token = getState().auth.token;
-
-  //   Headers
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-  //If token, add headers
-  if (token) {
-    config.headers["Authorization"] = `Token ${token}`;
-  }
-
   axios
-    .get("api/auth/user", config)
+    .get("api/auth/user", tokenConfig(getState))
     .then(res => {
       dispatch({
         type: USER_LOADED,
@@ -70,11 +58,50 @@ export const login = (username, password) => dispatch => {
     });
 };
 
-//Logout user
+//REGISTER USER
+export const register = ({ username, email, password }) => dispatch => {
+  //   Headers
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
 
+  const body = JSON.stringify({ username, email, password });
+  axios
+    .post("api/auth/register", body, config)
+    .then(res => {
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      });
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+      dispatch({
+        type: REGISTER_FAIL
+      });
+    });
+};
+
+//Logout user
 export const logout = () => (dispatch, getState) => {
+  axios
+    .post("api/auth/logout/", null, tokenConfig(getState))
+    .then(res => {
+      dispatch({
+        type: LOGOUT_SUCCESS
+      });
+    })
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status));
+    });
+};
+
+export const tokenConfig = getState => {
   //get the token
   const token = getState().auth.token;
+
   //   Headers
   const config = {
     headers: {
@@ -86,14 +113,5 @@ export const logout = () => (dispatch, getState) => {
     config.headers["Authorization"] = `Token ${token}`;
   }
 
-  axios
-    .post("api/auth/logout/", null, config)
-    .then(res => {
-      dispatch({
-        type: LOGOUT_SUCCESS
-      });
-    })
-    .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
+  return config;
 };

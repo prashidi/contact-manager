@@ -1,11 +1,12 @@
 import axios from "axios";
 import { GET_CONTACTS, DELETE_CONTACT, ADD_CONTACT } from "./types";
 import { createMessage, returnErrors } from "./messages";
+import { tokenConfig } from "./auth";
 
 //Get all contacts from the server...
-export const getContacts = () => dispatch => {
+export const getContacts = () => (dispatch, getState) => {
   axios
-    .get("/api/contacts/")
+    .get("/api/contacts/", tokenConfig(getState))
     .then(res => {
       dispatch({
         type: GET_CONTACTS,
@@ -18,9 +19,9 @@ export const getContacts = () => dispatch => {
 };
 
 //Delete a contact by provinding an ID
-export const deleteContact = id => dispatch => {
+export const deleteContact = id => (dispatch, getState) => {
   axios
-    .delete(`/api/contacts/${id}/`)
+    .delete(`/api/contacts/${id}/`, tokenConfig(getState))
     .then(res => {
       dispatch(createMessage({ deleteContact: "Contact deleted succesfuly" }));
       dispatch({
@@ -32,9 +33,9 @@ export const deleteContact = id => dispatch => {
 };
 
 //Add contact to the database
-export const addContact = contact => dispatch => {
+export const addContact = contact => (dispatch, getState) => {
   axios
-    .post("/api/contacts/", contact)
+    .post("/api/contacts/", contact, tokenConfig(getState))
     .then(res => {
       dispatch(createMessage({ addContact: "Contact added succesfuly" }));
       dispatch({
