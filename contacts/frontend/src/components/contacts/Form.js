@@ -27,7 +27,6 @@ class Form extends Component {
 
   render() {
     const { name, email, phone } = this.state;
-    console.log(this.state);
     return (
       <div className="card card-body mt-4 mb-4">
         <h2>Add New Contact</h2>

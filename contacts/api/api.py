@@ -1,14 +1,14 @@
+from .models import Contact
 from rest_framework import viewsets, permissions
+from .serializers import ContactSerializer
 
-from . serializers import ContactSerializer
-from . models import Contact
+# Contact Viewset
 
 
 class ContactViewSets(viewsets.ModelViewSet):
-    permission_class = [
-        permissions.IsAuthenticated
+    permission_classes = [
+        permissions.IsAuthenticated,
     ]
-
     serializer_class = ContactSerializer
 
     def get_queryset(self):

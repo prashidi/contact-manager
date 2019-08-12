@@ -7,5 +7,5 @@ class Contact(models.Model):
     email = models.EmailField(max_length=254, unique=True)
     phone = models.CharField(max_length=50)
     owner = models.ForeignKey(
-        User, related_name='contacts', on_delete=models.CASCADE, null=True)
+        User, related_name='contacts', on_delete=models.CASCADE, null=True, blank=True, default=None)
     create_at = models.DateField(auto_now=True)
